@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARTIST</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    /* ===== RESET & GENERAL STYLES ===== */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #3e2c1c;
+      background: linear-gradient(120deg, #d9c7b2, #f5f0ea);
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+      color: #3e2c1c;
+    }
+    header h2 {
+      margin: 20px 0 0;
+      font-size: 1.5em;
+    }
+
+    /* ===== SLIDER CONTAINER ===== */
+    .slider {
+      position: relative;
+      width: 60%;
+      max-width: 800px;
+      margin: 20px auto;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 0.7s ease-in-out;
+    }
+    .slides img, 
+    .slides video {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 15px;
+      flex-shrink: 0;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+    .arrow:hover {
+      background: rgba(0,0,0,0.7);
+    }
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    .dots {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 5px;
+      background: #bbb;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .dot.active {
+      background: #3e2c1c;
+    }
+
+    /* ===== GALLERY & RATING & COMMENTS ===== */
+    .gallery {
+      width: 400px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .gallery img, .gallery video {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      animation: fadeInUp 1s ease both;
+    }
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .rating {
+      text-align: center;
+      margin: 40px 0;
+    }
+    .stars i {
+      font-size: 25px;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .stars i.active {
+      color: gold;
+    }
+
+    .comments {
+      width: 90%;
+      margin: auto;
+      margin-bottom: 50px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      animation: fadeIn 2s ease both;
+    }
+    .comments textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    .comments button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #3e2c1c;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .comment-list {
+      margin-top: 20px;
+    }
+    .comment-item {
+      background: #f5f0ea;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .social {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .social a {
+      margin: 0 10px;
+      color: #3e2c1c;
+      font-size: 30px;
+      text-decoration: none;
+    }
+
+    .whatsapp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25d366;
+      color: white;
+      font-size: 25px;
+      padding: 15px;
+      border-radius: 50%;
+      text-decoration: none;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%,20%,50%,80%,100% {transform: translateY(0);} 
+      40% {transform: translateY(-10px);} 
+      60% {transform: translateY(-5px);} 
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .slider {
+        width: 90%;
+      }
+      .slides img, 
+      .slides video {
+        height: 250px;
+      }
+    }
+    @media (max-width: 480px) {
+      header h1 { font-size: 2em; }
+      header h2 { font-size: 1.2em; }
+      .slides img, 
+      .slides video {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <h1>ARTIST</h1>
+    <h2>Artist's Exhibition</h2>
+  </header>
+
+  <!-- ===== SLIDER ===== -->
+  <div class="slider">
+    <div class="slides" id="slides">
+      <img src="pictuers/IMG-1.jpg" alt="Painting 1">
+      <img src="pictuers/IMG-2.jpg" alt="Painting 2">
+      <video muted autoplay loop>
+        <source src="pictuers/VID-1.mp4" type="video/mp4">
+      </video>
+      <img src="pictuers/IMG-2.jpg" alt="Painting 3">
+    </div>
+    <button class="arrow prev" id="prev">&#10094;</button>
+    <button class="arrow next" id="next">&#10095;</button>
+  </div>
+  <div class="dots" id="dots"></div>
+
+  <!-- ===== GALLERY ===== -->
+  <div class="gallery">
+    <img src="pictuers/IMG-1.jpg" alt="Gallery 1">
+    <img src="pictuers/IMG-2.jpg" alt="Gallery 2">
+    <video controls><source src="pictuers/VID-2.mp4" type="video/mp4"></video>
+  </div>
+
+  <!-- ===== RATING ===== -->
+  <div class="rating">
+    <h3>Rate Us</h3>
+    <div class="stars">
+      <i class="fa fa-star"></i>
+      <i class="fa fa-star"></i>
+      <i class="fa fa-star"></i>
+      <i class="fa fa-star"></i>
+      <i class="fa fa-star"></i>
+    </div>
+    <p id="avg-rating">Average Rating: 0</p>
+  </div>
+
+  <!-- ===== COMMENTS ===== -->
+  <div class="comments">
+    <h3>Visitors Comments</h3>
+    <textarea id="comment-input" placeholder="Write your comment..."></textarea>
+    <button onclick="addComment()">Submit</button>
+    <div class="comment-list" id="comment-list"></div>
+  </div>
+
+  <!-- ===== SOCIAL ===== -->
+  <div class="social">
+    <a href="https://www.tiktok.com/@artist26685?_t=ZS-8zHhLnzYFd4&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/artist22686?igsh=MXc2cWk3cGtzcGhiZw==" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/share/1RhxvbYC1B/" target="_blank"><i class="fab fa-facebook"></i></a>
+  </div>
+
+  <a class="whatsapp" href="https://wa.me/201102828996" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+  <!-- ===== SCRIPT ===== -->
+  <script>
+    // Slider
+    const slides = document.getElementById("slides");
+    const slideItems = slides.children;
+    const totalSlides = slideItems.length;
+
+    let index = 0;
+    let autoSlide;
+
+    const dotsContainer = document.getElementById("dots");
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement("span");
+      dot.classList.add("dot");
+      if (i === 0) dot.classList.add("active");
+      dot.addEventListener("click", () => {
+        showSlide(i);
+        resetAutoSlide();
+      });
+      dotsContainer.appendChild(dot);
+    }
+    const dots = document.querySelectorAll(".dot");
+
+    function updateDots() {
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+    }
+    function showSlide(i) {
+      if (i >= totalSlides) index = 0;
+      else if (i < 0) index = totalSlides - 1;
+      else index = i;
+      slides.style.transform = `translateX(${-index * 100}%)`;
+      updateDots();
+    }
+    function nextSlide() { showSlide(index + 1); }
+    function prevSlide() { showSlide(index - 1); }
+
+    document.getElementById("next").addEventListener("click", () => { nextSlide(); resetAutoSlide(); });
+    document.getElementById("prev").addEventListener("click", () => { prevSlide(); resetAutoSlide(); });
+
+    function startAutoSlide() { autoSlide = setInterval(nextSlide, 4000); }
+    function resetAutoSlide() { clearInterval(autoSlide); startAutoSlide(); }
+    startAutoSlide();
+
+    // Rating
+    const stars = document.querySelectorAll('.stars i');
+    const avgText = document.getElementById('avg-rating');
+    let ratings = [];
+
+    stars.forEach((star, index) => {
+      star.addEventListener('click', () => {
+        ratings.push(index + 1);
+        localStorage.setItem('ratings', JSON.stringify(ratings));
+        updateRating();
+        highlightStars(index);
+      });
+    });
+
+    function highlightStars(index) {
+      stars.forEach((s, i) => { s.classList.toggle('active', i <= index); });
+    }
+    function updateRating() {
+      let sum = ratings.reduce((a,b) => a+b, 0);
+      let avg = (sum / ratings.length).toFixed(1);
+      avgText.textContent = `Average Rating: ${avg}`;
+    }
+    if(localStorage.getItem('ratings')){
+      ratings = JSON.parse(localStorage.getItem('ratings'));
+      updateRating();
+    }
+
+    // Comments
+    function addComment(){
+      let input = document.getElementById('comment-input');
+      if(input.value.trim() !== ""){
+        let comments = JSON.parse(localStorage.getItem('comments')) || [];
+        comments.push(input.value);
+        localStorage.setItem('comments', JSON.stringify(comments));
+        displayComments();
+        input.value = "";
+      }
+    }
+    function displayComments(){
+      let comments = JSON.parse(localStorage.getItem('comments')) || [];
+      let list = document.getElementById('comment-list');
+      list.innerHTML = "";
+      comments.forEach(c => {
+        let div = document.createElement('div');
+        div.classList.add('comment-item');
+        div.textContent = c;
+        list.appendChild(div);
+      });
+    }
+    displayComments();
+  </script>
+</body>
+</html>
